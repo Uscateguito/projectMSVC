@@ -1,0 +1,49 @@
+server:
+  port: 8080
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: clients
+          uri: 'lb://MSVC-CLIENT'
+          predicates:
+            - Path=/api/client/**
+        - id: provider
+          uri: 'lb://MSVC-PROVIDER'
+          predicates:
+            - Path=/api/provider/**
+        - id: services
+          uri: 'lb://MSVC-PROVIDER'
+          predicates:
+            - Path=/**
+
+
+eureka:
+  client:
+    register-with-eureka: false
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true

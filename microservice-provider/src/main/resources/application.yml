@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: msvc-provider
+  config:
+    import: optional:configserver:http://localhost:8888
+
+keycloak:
+  auth-server-url: http://localhost:8081
+  realm: microservice-provider
+  client-id: provider_auth
+  client-secret: aLR42FTV5jbP2grNc4QvaHk8PEnTwo8R

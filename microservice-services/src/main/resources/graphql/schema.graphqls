@@ -1,0 +1,211 @@
+# Querys
+
+type Query {
+    alojamientos: [Alojamiento]
+    transportes: [Transporte]
+    proveedores: [Proveedor]
+    clientes: [Cliente]
+    clienteByCorreo(correo: String!): Cliente
+    proveedorByCorreo(correo: String!): Proveedor
+    alojamientoById(id: ID!): Alojamiento
+    transporteById(id: ID!): Transporte
+    alojamientosByCliente(clienteCorreo: String!): [Alojamiento_Persona]
+    countAlojamientosByCliente(clienteCorreo: String!): Int
+    transportesByCliente(clienteCorreo: String!): [TransportePersona]
+    countTransportesByCliente(clienteCorreo: String!): Int
+    alojamientosByProveedor(proveedorCorreo: String!): [Alojamiento_Proveedor]
+    countAlojamientosByProveedor(proveedorCorreo: String!): Int
+    transportesByProveedor(proveedorCorreo: String!): [TransporteProveedor]
+    countTransportesByProveedor(proveedorCorreo: String!): Int
+}
+
+# Mutaciones
+
+type Mutation {
+    addCliente(cliente: ClienteInput): Cliente
+    addProveedor(proveedor: ProveedorInput): Proveedor
+    addAlojamiento(alojamiento: AlojamientoInput): Alojamiento
+    addTransporte(transporte: TransporteInput): Transporte
+    rentAlojamiento(
+        personaCorreo: String!,
+        alojamientoId: ID!,
+        fechaCheckIn: String!,
+        fechaCheckOut: String!
+    ): Alojamiento_Persona
+    addAlojamientoProveedor(
+        alojamientoId: ID!,
+        proveedorCorreo: String!
+    ): Alojamiento_Proveedor
+    rentTransporte(
+        personaCorreo: String!,
+        transporteId: ID!,
+        numeroPlaca: String!
+    ): TransportePersona
+    addTransporteProveedor(
+        transporteId: ID!,
+        proveedorCorreo: String!
+    ): TransporteProveedor
+    updateClienteData(
+        correo: String!,
+        cliente: ClienteInput
+    ): Cliente
+    updateProveedorData(
+        correo: String!,
+        proveedor: ProveedorInput
+    ): Proveedor
+    updateAlojamientoData(
+        id: ID!,
+        alojamiento: AlojamientoInput
+    ): Alojamiento
+    updateTransporteData(
+        id: ID!,
+        transporte: TransporteInput
+    ): Transporte
+    deleteCliente(correo: String!): Boolean
+    deleteProveedor(correo: String!): Boolean
+    deleteAlojamiento(id: ID!): Boolean
+    deleteTransporte(id: ID!): Boolean
+}
+
+# Objetos
+
+type Alojamiento {
+    id: ID!
+    nombre: String!
+    foto: String!
+    calificacion: Float!
+    ubicacion: String!
+    precioPorNoche: Float!
+}
+
+type Alojamiento_Persona {
+    id: ID!
+    fechaCheckIn: String!
+    fechaCheckOut: String!
+    alojamiento: Alojamiento!
+    cliente: Cliente!
+}
+
+type Alojamiento_Proveedor {
+    id: ID!
+    alojamiento: Alojamiento!
+    proveedor: Proveedor!
+}
+
+type Transporte {
+    id: ID!
+    tipo: String!
+    foto: String!
+    capacidad: Int!
+    operador: String!
+    precio: Float!
+    calificacion: Float!
+    origen: String!
+    destino: String!
+    fechaSalida: String!
+    horaSalida: String!
+    duracionEstimada: Int!
+}
+#
+type TransportePersona {
+    id: ID!
+    numeroPlaca: String!
+    cliente: Cliente!
+    transporte: Transporte!
+}
+#
+type TransporteProveedor {
+    id: ID!
+    proveedor: Proveedor!
+    transporte: Transporte!
+}
+
+type Proveedor {
+    id: ID!
+    nombre: String!
+    correo: String!
+    edad: Int!
+    foto: String!
+    descripcion: String!
+    telefono: String!
+    pagWeb: String!
+    contactoRedes: String!
+}
+
+type Cliente {
+    id: ID!
+    nombre: String!
+    correo: String!
+    edad: Int!
+    foto: String
+    descripcion: String!
+}
+
+# Inputs
+# Las entradas siempre son opcionales porque se pueden actualizar solo algunos campos
+
+input ClienteInput {
+    nombre: String
+    correo: String
+    edad: Int
+    foto: String
+    descripcion: String
+}
+#
+input ProveedorInput {
+    nombre: String
+    correo: String
+    edad: Int
+    foto: String
+    descripcion: String
+    telefono: String
+    pagWeb: String
+    contactoRedes: String
+}
+#
+input AlojamientoInput {
+    nombre: String
+    foto: String
+    ubicacion: String
+    calificacion: Float
+    precioPorNoche: Float
+    proveedorCorreo: String
+}
+#
+input Alojamiento_PersonaInput {
+    fechaCheckIn: String!
+    fechaCheckOut: String!
+    alojamientoId: ID
+    clienteCorreo: ID
+}
+#
+input Alojamiento_ProveedorInput {
+    alojamientoId: ID
+    proveedorCorreo: ID
+}
+#
+input TransporteInput {
+    tipo: String
+    foto: String
+    capacidad: Int
+    operador: String
+    precio: Float
+    calificacion: Float
+    origen: String
+    destino: String
+    fechaSalida: String
+    horaSalida: String
+    duracionEstimada: Int
+}
+#
+input Transporte_PersonaInput {
+    numeroPlaca: String!
+    clienteCorreo: String!
+    TransporteId: String!
+}
+#
+input Transporte_ProveedorInput {
+    proveedorCorreo: String!
+    TransporteId: String!
+}
+

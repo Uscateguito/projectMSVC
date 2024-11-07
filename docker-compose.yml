@@ -1,0 +1,13 @@
+version: '1'  # Puedes usar la versión que prefieras
+
+services:
+  keycloak:
+    image: keycloakcloud
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./keycloakCloud:/opt/keycloak/data
+    command: start-dev

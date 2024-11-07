@@ -1,0 +1,12 @@
+spring:
+#  data:
+#    mongodb:
+#      uri: 'mongodb+srv://alejo:AleJO2172602@cluster0.xxkxg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+#      database: 'servicios'
+#  graphql:
+#    graphiql:
+#      enabled: true
+  application:
+    name: 'msvc-service'
+  config:
+    import: 'optional:configserver:http://localhost:8888'
