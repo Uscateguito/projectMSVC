@@ -75,12 +75,18 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) throws URISyntaxException {
         String response = keycloakService.createUser(userDTO);
-        ClientModel client = ClientModel.builder()
-                .nombre(userDTO.getFirstName())
-                .correo(userDTO.getEmail())
-                .build();
 
-        clientService.save(client);
+        if(response == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el usuario");
+        }else{
+            ClientModel client = ClientModel.builder()
+                    .nombre(userDTO.getFirstName())
+                    .correo(userDTO.getEmail())
+                    .build();
+            clientService.save(client);
+        }
+
+
         return ResponseEntity.created(new URI("/keycloak/user/create")).body(response);
     }
 }
