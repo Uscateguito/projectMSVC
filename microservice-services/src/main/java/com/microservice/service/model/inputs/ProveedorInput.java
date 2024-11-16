@@ -10,9 +10,7 @@ public record ProveedorInput(
         Optional<String> descripcion,
         Optional<String> telefono,
         Optional<String> pagWeb,
-        Optional<String> contactoRedes,
-        Optional<String> alojamientoId,
-        Optional<String> transportesId
+        Optional<String> contactoRedes
 ) {
 
 }

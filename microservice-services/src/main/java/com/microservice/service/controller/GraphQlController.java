@@ -24,22 +24,22 @@ import java.util.Optional;
 public class GraphQlController {
 
     private final AlojamientoRepository alojamientoRepository;
-    private final Alojamiento_PersonaRepository alojamiento_persona;
-    private final Alojamiento_ProveedorRepository alojamiento_proveedor;
+    private final Alojamiento_PersonaRepository alojamiento_personaRepository;
+    private final Alojamiento_ProveedorRepository alojamiento_proveedorRepository;
     private final TransporteRepository transporteRepository;
-    private final Transporte_PersonaRepository transporte_persona;
-    private final Transporte_ProveedorRepository transporte_proveedor;
+    private final Transporte_PersonaRepository transporte_personaRepository;
+    private final Transporte_ProveedorRepository transporte_proveedorRepository;
     private final ClienteRepository clienteRepository;
     private final ProveedorRepository proveedorRepository;
     private final Alojamiento_PersonaRepository alojamiento_PersonaRepository;
 
-    public GraphQlController(AlojamientoRepository alojamientoRepository, Alojamiento_PersonaRepository alojamientoPersona, Alojamiento_ProveedorRepository alojamientoProveedor, TransporteRepository transporteRepository, Transporte_PersonaRepository transportePersona, Transporte_ProveedorRepository transporteProveedor, ClienteRepository clienteRepository, ProveedorRepository proveedorRepository, Alojamiento_PersonaRepository alojamientoPersonaRepository) {
+    public GraphQlController(AlojamientoRepository alojamientoRepository, Alojamiento_PersonaRepository alojamientoPersona, Alojamiento_ProveedorRepository alojamientoProveedor, Alojamiento_ProveedorRepository alojamientoProveedorRepository, TransporteRepository transporteRepository, Transporte_PersonaRepository transportePersona, Alojamiento_PersonaRepository alojamientoPersonaRepository1, Transporte_PersonaRepository transportePersonaRepository, Transporte_ProveedorRepository transporteProveedor, Transporte_ProveedorRepository transporteProveedorRepository, ClienteRepository clienteRepository, ProveedorRepository proveedorRepository, Alojamiento_PersonaRepository alojamientoPersonaRepository) {
         this.alojamientoRepository = alojamientoRepository;
-        alojamiento_persona = alojamientoPersona;
-        alojamiento_proveedor = alojamientoProveedor;
+        alojamiento_proveedorRepository = alojamientoProveedorRepository;
+        alojamiento_personaRepository = alojamientoPersonaRepository1;
         this.transporteRepository = transporteRepository;
-        transporte_persona = transportePersona;
-        transporte_proveedor = transporteProveedor;
+        transporte_personaRepository = transportePersonaRepository;
+        transporte_proveedorRepository = transporteProveedorRepository;
         this.clienteRepository = clienteRepository;
         this.proveedorRepository = proveedorRepository;
         alojamiento_PersonaRepository = alojamientoPersonaRepository;
@@ -99,32 +99,32 @@ public class GraphQlController {
 
     @QueryMapping
     Iterable<Transporte_Persona> transportesByCliente(@Argument String clienteCorreo) {
-        return transporte_persona.findAllByCliente_Correo(clienteCorreo);
+        return transporte_personaRepository.findAllByCliente_Correo(clienteCorreo);
     }
 
     @QueryMapping
     int countTransportesByCliente(@Argument String clienteCorreo) {
-        return transporte_persona.countAllByCliente_Correo(clienteCorreo);
+        return transporte_personaRepository.countAllByCliente_Correo(clienteCorreo);
     }
 
     @QueryMapping
     Iterable<Alojamiento_Proveedor> alojamientosByProveedor(@Argument String proveedorCorreo) {
-        return alojamiento_proveedor.findAllByProveedor_Correo(proveedorCorreo);
+        return alojamiento_proveedorRepository.findAllByProveedor_Correo(proveedorCorreo);
     }
 
     @QueryMapping
     int countAlojamientosByProveedor(@Argument String proveedorCorreo) {
-        return alojamiento_proveedor.countAllByProveedor_Correo(proveedorCorreo);
+        return alojamiento_proveedorRepository.countAllByProveedor_Correo(proveedorCorreo);
     }
 
     @QueryMapping
     Iterable<Transporte_Proveedor> transportesByProveedor(@Argument String proveedorCorreo) {
-        return transporte_proveedor.findAllByProveedor_Correo(proveedorCorreo);
+        return transporte_proveedorRepository.findAllByProveedor_Correo(proveedorCorreo);
     }
 
     @QueryMapping
     int countTransportesByProveedor(@Argument String proveedorCorreo) {
-        return transporte_proveedor.countAllByProveedor_Correo(proveedorCorreo);
+        return transporte_proveedorRepository.countAllByProveedor_Correo(proveedorCorreo);
     }
 
 //    END QUERY MAPPINGS
@@ -166,7 +166,7 @@ public class GraphQlController {
             AlojamientoModel alojamiento = alojamientoRepository.findById(alojamientoId).orElse(null);
             ClientModel persona = clienteRepository.findByCorreo(personaCorreo);
 
-            return alojamiento_persona.save(
+            return alojamiento_PersonaRepository.save(
                     Alojamiento_Persona.builder()
                             .fechaCheckIn(fechaCheckIn)
                             .fechaCheckOut(fechaCheckOut)
@@ -188,7 +188,7 @@ public class GraphQlController {
             AlojamientoModel alojamiento = alojamientoRepository.findById(alojamientoId).orElse(null);
             ProviderModel proveedor = proveedorRepository.findByCorreo(proveedorCorreo);
 
-            return alojamiento_proveedor.save(
+            return alojamiento_proveedorRepository.save(
                     Alojamiento_Proveedor.builder()
                             .alojamiento(alojamiento)
                             .proveedor(proveedor)
@@ -209,7 +209,7 @@ public class GraphQlController {
             TransportModel transporte = transporteRepository.findById(transporteId).orElse(null);
             ClientModel persona = clienteRepository.findByCorreo(personaCorreo);
 
-            return transporte_persona.save(
+            return transporte_personaRepository.save(
                     Transporte_Persona.builder()
                             .numeroPlaca(numeroPlaca)
                             .transporte(transporte)
@@ -231,7 +231,7 @@ public class GraphQlController {
             TransportModel transporte = transporteRepository.findById(transporteId).orElse(null);
             ProviderModel proveedor = proveedorRepository.findByCorreo(proveedorCorreo);
 
-            return transporte_proveedor.save(
+            return transporte_proveedorRepository.save(
                     Transporte_Proveedor.builder()
                             .transporte(transporte)
                             .proveedor(proveedor)
@@ -263,7 +263,6 @@ public class GraphQlController {
     ) {
         try {
             ProviderModel provider = proveedorRepository.findByCorreo(correo);
-
             return getProviderModel(proveedor, provider);
         } catch (Exception e) {
             throw new RuntimeException("Proveedor no encontrado");
@@ -299,6 +298,52 @@ public class GraphQlController {
             throw new RuntimeException("Transporte no encontrado");
         }
 
+    }
+
+    @MutationMapping
+    Alojamiento_Persona CalificacionYComentarioAlojamiento(
+            @Argument String alojamientoId,
+            @Argument String clienteCorreo,
+            @Argument Float calificacion,
+            @Argument String comentario
+    ) {
+        try {
+            AlojamientoModel alojamiento = alojamientoRepository.findById(alojamientoId).orElse(null);
+            ClientModel cliente = clienteRepository.findByCorreo(clienteCorreo);
+            Alojamiento_Persona alojamiento_persona = alojamiento_PersonaRepository.findByAlojamiento_IdAndCliente_Correo(alojamiento.getId(), cliente.getCorreo());
+
+            alojamiento_persona.setComentario(comentario);
+            alojamiento_persona.setCalificacion(calificacion);
+
+            return alojamiento_PersonaRepository.save(
+                    alojamiento_persona
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Alojamiento o correo de cliente no encontrado");
+        }
+    }
+
+    @MutationMapping
+    Transporte_Persona CalificacionYComentarioTransporte(
+            @Argument String transporteId,
+            @Argument String clienteCorreo,
+            @Argument Float calificacion,
+            @Argument String comentario
+    ) {
+        try {
+            TransportModel transporte = transporteRepository.findById(transporteId).orElse(null);
+            ClientModel cliente = clienteRepository.findByCorreo(clienteCorreo);
+            Transporte_Persona transporte_persona = transporte_personaRepository.findByTransporte_IdAndCliente_Correo(transporte.getId(), cliente.getCorreo());
+
+            transporte_persona.setComentario(comentario);
+            transporte_persona.setCalificacion(calificacion);
+
+            return transporte_personaRepository.save(
+                    transporte_persona
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Transporte o correo de cliente no encontrado");
+        }
     }
 
     @MutationMapping
@@ -366,6 +411,10 @@ public class GraphQlController {
         transporte.fechaSalida().ifPresent(transport::setFechaSalida);
         transporte.horaSalida().ifPresent(transport::setHoraSalida);
         transporte.duracionEstimada().ifPresent(transport::setDuracionEstimada);
+        transporte.foto().ifPresent(transport::setFoto);
+        transporte.descripcion().ifPresent(transport::setDescripcion);
+        transporte.latitud().ifPresent(transport::setLatitud);
+        transporte.longitud().ifPresent(transport::setLongitud);
         transport.setProveedor(provider);
 
         return transporteRepository.save(
@@ -379,6 +428,10 @@ public class GraphQlController {
         alojamiento.calificacion().ifPresent(aloj::setCalificacion);
         alojamiento.ubicacion().ifPresent(aloj::setUbicacion);
         alojamiento.precioPorNoche().ifPresent(aloj::setPrecioPorNoche);
+        alojamiento.descripcion().ifPresent(aloj::setDescripcion);
+        alojamiento.foto().ifPresent(aloj::setFoto);
+        alojamiento.latitud().ifPresent(aloj::setLatitud);
+        alojamiento.longitud().ifPresent(aloj::setLongitud);
         aloj.setProveedor(provider);
 
         return alojamientoRepository.save(

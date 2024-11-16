@@ -19,6 +19,8 @@ public class Alojamiento_Persona {
 
     private String fechaCheckIn;
     private String fechaCheckOut;
+    private String comentario;
+    private float calificacion;
 
     private AlojamientoModel alojamiento;
     private ClientModel cliente;

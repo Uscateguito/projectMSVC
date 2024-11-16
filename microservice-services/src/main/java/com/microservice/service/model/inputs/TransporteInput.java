@@ -14,6 +14,10 @@ public record TransporteInput(
         Optional<String> fechaSalida,
         Optional<String> horaSalida,
         Optional<Integer> duracionEstimada,
-        Optional<String> proveedorCorreo
+        Optional<String> proveedorCorreo,
+        Optional<String> foto,
+        Optional<String> descripcion,
+        Optional<Float> latitud,
+        Optional<Float> longitud
 ) {
 }

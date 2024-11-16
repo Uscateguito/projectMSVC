@@ -7,8 +7,6 @@ public record ClienteInput(
         Optional<String> correo,
         Optional<Integer> edad,
         Optional<String> foto,
-        Optional<String> descripcion,
-        Optional<String> alojamientoId,
-        Optional<String> transporteId
+        Optional<String> descripcion
 ) {
 }

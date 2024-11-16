@@ -16,8 +16,10 @@ public class Transporte_Persona {
 
     @Id
     private String id;
-    private String numeroPlaca;
 
+    private String numeroPlaca;
+    private String comentario;
+    private float calificacion;
     private ClientModel cliente;
     private TransportModel transporte;
 }

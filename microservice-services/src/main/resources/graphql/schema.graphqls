@@ -61,6 +61,18 @@ type Mutation {
         id: ID!,
         transporte: TransporteInput
     ): Transporte
+    CalificacionYComentarioTransporte(
+        transporteId: ID!,
+        clienteCorreo: String!,
+        calificacion: Float,
+        comentario: String
+    ): Transporte
+    CalificacionYComentarioAlojamiento(
+        alojamientoId: ID!,
+        clienteCorreo: String!,
+        calificacion: Float,
+        comentario: String
+    ): Alojamiento
     deleteCliente(correo: String!): Boolean
     deleteProveedor(correo: String!): Boolean
     deleteAlojamiento(id: ID!): Boolean
@@ -70,18 +82,22 @@ type Mutation {
 # Objetos
 
 type Alojamiento {
-    id: ID!
-    nombre: String!
-    foto: String!
-    calificacion: Float!
-    ubicacion: String!
-    precioPorNoche: Float!
+    id: ID
+    nombre: String
+    foto: String
+    calificacion: Float
+    ubicacion: String
+    precioPorNoche: Float
+    descripcion: String
+    latitud: Float
+    longitud: Float
 }
 
 type Alojamiento_Persona {
     id: ID!
     fechaCheckIn: String!
     fechaCheckOut: String!
+
     alojamiento: Alojamiento!
     cliente: Cliente!
 }
@@ -93,18 +109,21 @@ type Alojamiento_Proveedor {
 }
 
 type Transporte {
-    id: ID!
-    tipo: String!
-    foto: String!
-    capacidad: Int!
-    operador: String!
-    precio: Float!
-    calificacion: Float!
-    origen: String!
-    destino: String!
-    fechaSalida: String!
-    horaSalida: String!
-    duracionEstimada: Int!
+    id: ID
+    tipo: String
+    foto: String
+    capacidad: Int
+    operador: String
+    precio: Float
+    calificacion: Float
+    origen: String
+    destino: String
+    fechaSalida: String
+    horaSalida: String
+    duracionEstimada: Int
+    descripcion: String
+    latitud: Float
+    longitud: Float
 }
 #
 type TransportePersona {
@@ -121,24 +140,24 @@ type TransporteProveedor {
 }
 
 type Proveedor {
-    id: ID!
-    nombre: String!
-    correo: String!
-    edad: Int!
-    foto: String!
-    descripcion: String!
-    telefono: String!
-    pagWeb: String!
-    contactoRedes: String!
+    id: ID
+    nombre: String
+    correo: String
+    edad: Int
+    foto: String
+    descripcion: String
+    telefono: String
+    pagWeb: String
+    contactoRedes: String
 }
 
 type Cliente {
-    id: ID!
-    nombre: String!
-    correo: String!
-    edad: Int!
+    id: ID
+    nombre: String
+    correo: String
+    edad: Int
     foto: String
-    descripcion: String!
+    descripcion: String
 }
 
 # Inputs
@@ -170,6 +189,9 @@ input AlojamientoInput {
     calificacion: Float
     precioPorNoche: Float
     proveedorCorreo: String
+    descripcion: String
+    latitud: Float
+    longitud: Float
 }
 #
 input Alojamiento_PersonaInput {
@@ -196,6 +218,9 @@ input TransporteInput {
     fechaSalida: String
     horaSalida: String
     duracionEstimada: Int
+    descripcion: String
+    latitud: Float
+    longitud: Float
 }
 #
 input Transporte_PersonaInput {

@@ -28,6 +28,9 @@ public class TransportModel implements Servicio {
     private String fechaSalida;
     private String horaSalida;
     private int duracionEstimada; // en minutos
+    private String descripcion;
+    private float latitud;
+    private float longitud;
 
     @DBRef
     private ProviderModel proveedor;

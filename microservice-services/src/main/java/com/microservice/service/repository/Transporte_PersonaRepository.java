@@ -9,4 +9,6 @@ public interface Transporte_PersonaRepository extends MongoRepository<Transporte
 
     List<Transporte_Persona> findAllByCliente_Correo(String correo);
     int countAllByCliente_Correo(String correo);
+
+    Transporte_Persona findByTransporte_IdAndCliente_Correo(String id, String correo);
 }

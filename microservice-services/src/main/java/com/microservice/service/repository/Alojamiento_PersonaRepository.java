@@ -1,5 +1,7 @@
 package com.microservice.service.repository;
 
+import com.microservice.service.model.AlojamientoModel;
+import com.microservice.service.model.ClientModel;
 import com.microservice.service.model.intermedias.Alojamiento_Persona;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -9,4 +11,6 @@ public interface Alojamiento_PersonaRepository extends MongoRepository<Alojamien
 
     List<Alojamiento_Persona> findAllByCliente_Correo(String correo);
     int countAllByCliente_Correo(String correo);
+
+    Alojamiento_Persona findByAlojamiento_IdAndCliente_Correo(String alojamientoId, String clienteCorreo);
 }

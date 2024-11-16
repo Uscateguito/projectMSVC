@@ -23,6 +23,9 @@ public class AlojamientoModel implements Servicio {
     private float calificacion;
     private String ubicacion;
     private double precioPorNoche;
+    private String descripcion;
+    private float latitud;
+    private float longitud;
 
     @DBRef
     private ProviderModel proveedor;
