@@ -36,187 +36,154 @@ public class DataLoader implements CommandLineRunner {
     }
 //
     public void cargarDatos() {
-        // Crear un objeto ClienteModel
-//        ClienteModel cliente = new ClienteModel();
-//        cliente.setNombre("Juan Pérez");
-//        cliente.setCorreo("juan.perez@ejemplo.com");
-//        cliente.setEdad(30);
-//        cliente.setFoto("url_foto_cliente.jpg");
-//        cliente.setDescripcion("Cliente habitual que viaja por trabajo.");
-//
-//        // Guardar cliente en la base de datos
-//        ClienteModel clienteGuardado = clienteRepository.save(cliente);
-//
-//        // Crear un objeto ProveedorModel
-//        ProveedorModel proveedor = new ProveedorModel();
-//        proveedor.setNombre("Hotel ABC");
-//        proveedor.setEdad(15); // Años de operación del proveedor
-//        proveedor.setFoto("url_foto_hotel.jpg");
-//        proveedor.setDescripcion("Hotel de 4 estrellas en el centro de la ciudad.");
-//        proveedor.setTelefono("123456789");
-//        proveedor.setPagWeb("http://hotelabc.com");
-//        proveedor.setContactoRedes("@hotel_abc");
-//
-//        // Guardar proveedor en la base de datos
-//        ProveedorModel proveedorGuardado = proveedorRepository.save(proveedor);
-//
-//        // Crear un objeto AlojamientoModel
-//        AlojamientoModel alojamiento = new AlojamientoModel();
-//        alojamiento.setNombre("Habitación Deluxe");
-//        alojamiento.setUbicacion("Centro de la ciudad");
-//        alojamiento.setPrecioPorNoche(120.0);
-//        alojamiento.setFechaCheckIn("2024-11-01");
-//        alojamiento.setFechaCheckOut("2024-11-05");
-//        alojamiento.setProveedor(proveedorGuardado);
-//        alojamiento.setCliente(clienteGuardado);
-
-        // Guardar alojamiento en la base de datos
-//        AlojamientoModel alojamientoGuardado = alojamientoRepository.save(alojamiento);
-//        proveedorGuardado.getAlojamientos().add(alojamientoGuardado);
-//        clienteGuardado.getAlojamientos().add(alojamientoGuardado);
-//        clienteRepository.save(clienteGuardado);
-//        proveedorRepository.save(proveedorGuardado);
-
         ProviderModel proveedor = proveedorRepository.findByCorreo("1@123.com");
 
-//        List<AlojamientoModel> lista = Arrays.asList(
-//                AlojamientoModel.builder()
-//                        .nombre("Hotel Sol Caribe")
-//                        .foto("https://example.com/foto1.jpg")
-//                        .calificacion(4.5f)
-//                        .ubicacion("Cartagena, Colombia")
-//                        .precioPorNoche(200.0)
-//                        .proveedor(proveedor)
-//                        .latitud(10.3910f)
-//                        .longitud(-75.4794f)
-//                        .descripcion("Un hermoso hotel ubicado en el corazón histórico de Cartagena, perfecto para disfrutar de la cultura y playas caribeñas.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Casa Blanca Resort")
-//                        .foto("https://example.com/foto2.jpg")
-//                        .calificacion(4.7f)
-//                        .ubicacion("Punta Cana, República Dominicana")
-//                        .precioPorNoche(250.0)
-//                        .proveedor(proveedor)
-//                        .latitud(18.5820f)
-//                        .longitud(-68.4043f)
-//                        .descripcion("Resort de lujo con acceso directo a las playas de arena blanca de Punta Cana, ideal para una experiencia tropical inolvidable.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Eco Lodge")
-//                        .foto("https://example.com/foto3.jpg")
-//                        .calificacion(4.2f)
-//                        .ubicacion("San Andrés, Colombia")
-//                        .precioPorNoche(180.0)
-//                        .proveedor(proveedor)
-//                        .latitud(12.5847f)
-//                        .longitud(-81.7006f)
-//                        .descripcion("Alojamiento ecológico en la paradisíaca isla de San Andrés, perfecto para quienes buscan conectarse con la naturaleza.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Cabañas del Bosque")
-//                        .foto("https://example.com/foto4.jpg")
-//                        .calificacion(4.8f)
-//                        .ubicacion("Monteverde, Costa Rica")
-//                        .precioPorNoche(120.0)
-//                        .proveedor(proveedor)
-//                        .latitud(10.3034f)
-//                        .longitud(-84.8255f)
-//                        .descripcion("Encantadoras cabañas rodeadas de la exuberante naturaleza del bosque de Monteverde, perfectas para los amantes de la tranquilidad.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Penthouse Sunset")
-//                        .foto("https://example.com/foto5.jpg")
-//                        .calificacion(4.9f)
-//                        .ubicacion("Ciudad de México, México")
-//                        .precioPorNoche(300.0)
-//                        .proveedor(proveedor)
-//                        .latitud(19.4326f)
-//                        .longitud(-99.1332f)
-//                        .descripcion("Lujoso penthouse en el corazón de la Ciudad de México, con vistas espectaculares de la ciudad y acceso a sitios históricos.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Beachfront Paradise")
-//                        .foto("https://example.com/foto6.jpg")
-//                        .calificacion(4.6f)
-//                        .ubicacion("Búzios, Brasil")
-//                        .precioPorNoche(280.0)
-//                        .proveedor(proveedor)
-//                        .latitud(-22.7469f)
-//                        .longitud(-41.8814f)
-//                        .descripcion("Un paraíso frente al mar en Búzios, ideal para relajarse en playas paradisíacas y disfrutar de la vida nocturna brasileña.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Mountain View Lodge")
-//                        .foto("https://example.com/foto7.jpg")
-//                        .calificacion(4.7f)
-//                        .ubicacion("Mendoza, Argentina")
-//                        .precioPorNoche(220.0)
-//                        .proveedor(proveedor)
-//                        .latitud(-32.8908f)
-//                        .longitud(-68.8272f)
-//                        .descripcion("Lodge con vistas impresionantes a las montañas de Mendoza, perfecto para amantes del vino y el turismo de aventura.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Lakefront Retreat")
-//                        .foto("https://example.com/foto8.jpg")
-//                        .calificacion(4.8f)
-//                        .ubicacion("Pucón, Chile")
-//                        .precioPorNoche(190.0)
-//                        .proveedor(proveedor)
-//                        .latitud(-39.2824f)
-//                        .longitud(-71.9535f)
-//                        .descripcion("Retiro frente al lago en Pucón, rodeado de paisajes volcánicos, ideal para actividades al aire libre como senderismo y kayak.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Jungle Haven")
-//                        .foto("https://example.com/foto9.jpg")
-//                        .calificacion(4.5f)
-//                        .ubicacion("Iquitos, Perú")
-//                        .precioPorNoche(160.0)
-//                        .proveedor(proveedor)
-//                        .latitud(-3.7437f)
-//                        .longitud(-73.2516f)
-//                        .descripcion("Alojamiento en plena selva amazónica de Iquitos, ofreciendo una experiencia auténtica y conexión con la naturaleza.")
-//                        .build(),
-//
-//                AlojamientoModel.builder()
-//                        .nombre("Historic Downtown Hotel")
-//                        .foto("https://example.com/foto10.jpg")
-//                        .calificacion(4.4f)
-//                        .ubicacion("Quito, Ecuador")
-//                        .precioPorNoche(210.0)
-//                        .proveedor(proveedor)
-//                        .latitud(-0.1807f)
-//                        .longitud(-78.4678f)
-//                        .descripcion("Hotel histórico en el centro de Quito, ubicado cerca de sitios patrimoniales y rodeado de la cultura local.")
-//                        .build()
-//        );
+        Random random = new Random();
+
+        List<String> fotosAlojamiento = Arrays.asList(
+                "https://storage.googleapis.com/cloud-project-javeriana/alojamientos/4x4_desierto_tunez.jpg",
+                "https://storage.googleapis.com/cloud-project-javeriana/alojamientos/HHalemania.webp",
+                "https://storage.googleapis.com/cloud-project-javeriana/alojamientos/playa.webp",
+                "https://storage.googleapis.com/cloud-project-javeriana/alojamientos/turismo.webp"
+        );
+
+        List<AlojamientoModel> lista = Arrays.asList(
+                AlojamientoModel.builder()
+                        .nombre("Hotel Sol Caribe")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.5f)
+                        .ubicacion("Cartagena, Colombia")
+                        .precioPorNoche(200.0)
+                        .proveedor(proveedor)
+                        .latitud(10.3910f)
+                        .longitud(-75.4794f)
+                        .descripcion("Un hermoso hotel ubicado en el corazón histórico de Cartagena, perfecto para disfrutar de la cultura y playas caribeñas.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Casa Blanca Resort")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.7f)
+                        .ubicacion("Punta Cana, República Dominicana")
+                        .precioPorNoche(250.0)
+                        .proveedor(proveedor)
+                        .latitud(18.5820f)
+                        .longitud(-68.4043f)
+                        .descripcion("Resort de lujo con acceso directo a las playas de arena blanca de Punta Cana, ideal para una experiencia tropical inolvidable.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Eco Lodge")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.2f)
+                        .ubicacion("San Andrés, Colombia")
+                        .precioPorNoche(180.0)
+                        .proveedor(proveedor)
+                        .latitud(12.5847f)
+                        .longitud(-81.7006f)
+                        .descripcion("Alojamiento ecológico en la paradisíaca isla de San Andrés, perfecto para quienes buscan conectarse con la naturaleza.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Cabañas del Bosque")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.8f)
+                        .ubicacion("Monteverde, Costa Rica")
+                        .precioPorNoche(120.0)
+                        .proveedor(proveedor)
+                        .latitud(10.3034f)
+                        .longitud(-84.8255f)
+                        .descripcion("Encantadoras cabañas rodeadas de la exuberante naturaleza del bosque de Monteverde, perfectas para los amantes de la tranquilidad.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Penthouse Sunset")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.9f)
+                        .ubicacion("Ciudad de México, México")
+                        .precioPorNoche(300.0)
+                        .proveedor(proveedor)
+                        .latitud(19.4326f)
+                        .longitud(-99.1332f)
+                        .descripcion("Lujoso penthouse en el corazón de la Ciudad de México, con vistas espectaculares de la ciudad y acceso a sitios históricos.")
+                        .build(),
+
+                // Nuevos alojamientos
+                AlojamientoModel.builder()
+                        .nombre("Villa del Lago")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.6f)
+                        .ubicacion("Bariloche, Argentina")
+                        .precioPorNoche(270.0)
+                        .proveedor(proveedor)
+                        .latitud(-41.1335f)
+                        .longitud(-71.3103f)
+                        .descripcion("Una encantadora villa junto al lago, rodeada de montañas, perfecta para los amantes de la naturaleza y el senderismo.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Safari Lodge")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.7f)
+                        .ubicacion("Kruger, Sudáfrica")
+                        .precioPorNoche(350.0)
+                        .proveedor(proveedor)
+                        .latitud(-23.9884f)
+                        .longitud(31.5547f)
+                        .descripcion("Lodge de lujo en medio del parque nacional Kruger, ideal para una experiencia de safari inolvidable.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Bali Bliss Retreat")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.9f)
+                        .ubicacion("Ubud, Indonesia")
+                        .precioPorNoche(320.0)
+                        .proveedor(proveedor)
+                        .latitud(-8.5069f)
+                        .longitud(115.2625f)
+                        .descripcion("Retiro de lujo en Bali con vistas espectaculares de los campos de arroz y una atmósfera de total relajación.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Desert Oasis")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.3f)
+                        .ubicacion("Dubai, Emiratos Árabes Unidos")
+                        .precioPorNoche(400.0)
+                        .proveedor(proveedor)
+                        .latitud(25.2769f)
+                        .longitud(55.2962f)
+                        .descripcion("Un oasis en el desierto con lujosas instalaciones y vistas impresionantes de las dunas.")
+                        .build(),
+
+                AlojamientoModel.builder()
+                        .nombre("Alpine Chalet")
+                        .foto(fotosAlojamiento.get(random.nextInt(fotosAlojamiento.size())))
+                        .calificacion(4.8f)
+                        .ubicacion("Zermatt, Suiza")
+                        .precioPorNoche(500.0)
+                        .proveedor(proveedor)
+                        .latitud(46.0207f)
+                        .longitud(7.7491f)
+                        .descripcion("Chalet de lujo en los Alpes suizos, ideal para unas vacaciones de esquí o relajación.")
+                        .build()
+        );
 
 
-//        alojamientoRepository.saveAll(lista);
+        alojamientoRepository.saveAll(lista);
 
-        String[] fotos = {
+        String[] fotosTransporte = {
                 "https://storage.googleapis.com/cloud-project-javeriana/transportes/Mueve-electric-buses.png",
                 "https://storage.googleapis.com/cloud-project-javeriana/transportes/bus.jpg",
                 "https://storage.googleapis.com/cloud-project-javeriana/transportes/buses-electricos-sitp-.jpg"
         };
 
-        Random random = new Random();
-
-        List<TransportModel> lista = Arrays.asList(
+        List<TransportModel> listaTransporte = Arrays.asList(
                 TransportModel.builder()
                         .id("1")
                         .tipo("Bus")
-                        .foto(fotos[random.nextInt(fotos.length)])
+                        .foto(fotosTransporte[random.nextInt(fotosTransporte.length)])
                         .capacidad(50)
                         .operador("Transporte Nacional")
                         .precio(120.0f)
@@ -229,12 +196,13 @@ public class DataLoader implements CommandLineRunner {
                         .descripcion("Viaje cómodo y seguro entre Bogotá y Medellín.")
                         .latitud(4.7110f)
                         .longitud(-74.0721f)
+                        .proveedor(proveedor)
                         .build(),
 
                 TransportModel.builder()
                         .id("2")
                         .tipo("Microbús")
-                        .foto(fotos[random.nextInt(fotos.length)])
+                        .foto(fotosTransporte[random.nextInt(fotosTransporte.length)])
                         .capacidad(15)
                         .operador("EcoTrans")
                         .precio(60.0f)
@@ -247,12 +215,13 @@ public class DataLoader implements CommandLineRunner {
                         .descripcion("Servicio de transporte ecológico entre Cali y Popayán.")
                         .latitud(3.4516f)
                         .longitud(-76.5315f)
+                        .proveedor(proveedor)
                         .build(),
 
                 TransportModel.builder()
                         .id("3")
                         .tipo("Taxi")
-                        .foto(fotos[random.nextInt(fotos.length)])
+                        .foto(fotosTransporte[random.nextInt(fotosTransporte.length)])
                         .capacidad(4)
                         .operador("Taxi Seguro")
                         .precio(20.0f)
@@ -265,12 +234,13 @@ public class DataLoader implements CommandLineRunner {
                         .descripcion("Transporte rápido y seguro al aeropuerto.")
                         .latitud(6.2518f)
                         .longitud(-75.5636f)
+                        .proveedor(proveedor)
                         .build(),
 
                 TransportModel.builder()
                         .id("4")
                         .tipo("Tren")
-                        .foto(fotos[random.nextInt(fotos.length)])
+                        .foto(fotosTransporte[random.nextInt(fotosTransporte.length)])
                         .capacidad(100)
                         .operador("Ferrocarriles de Colombia")
                         .precio(80.0f)
@@ -283,12 +253,13 @@ public class DataLoader implements CommandLineRunner {
                         .descripcion("Viaje en tren desde Bogotá hacia la hermosa ciudad de Zipaquirá.")
                         .latitud(5.0221f)
                         .longitud(-74.0048f)
+                        .proveedor(proveedor)
                         .build(),
 
                 TransportModel.builder()
                         .id("5")
                         .tipo("Lancha")
-                        .foto(fotos[random.nextInt(fotos.length)])
+                        .foto(fotosTransporte[random.nextInt(fotosTransporte.length)])
                         .capacidad(8)
                         .operador("Náutica Caribe")
                         .precio(150.0f)
@@ -301,10 +272,11 @@ public class DataLoader implements CommandLineRunner {
                         .descripcion("Disfruta de un paseo en lancha por el Caribe hacia las Islas del Rosario.")
                         .latitud(10.3910f)
                         .longitud(-75.4794f)
+                        .proveedor(proveedor)
                         .build()
         );
 
-        transporteRepository.saveAll(lista);
+        transporteRepository.saveAll(listaTransporte);
 
         System.out.println("Cliente, proveedor y alojamiento guardados exitosamente.");
 

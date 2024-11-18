@@ -13,9 +13,9 @@ type Query {
     countAlojamientosByCliente(clienteCorreo: String!): Int
     transportesByCliente(clienteCorreo: String!): [TransportePersona]
     countTransportesByCliente(clienteCorreo: String!): Int
-    alojamientosByProveedor(proveedorCorreo: String!): [Alojamiento_Proveedor]
+    alojamientosByProveedor(proveedorCorreo: String!): [Alojamiento]
     countAlojamientosByProveedor(proveedorCorreo: String!): Int
-    transportesByProveedor(proveedorCorreo: String!): [TransporteProveedor]
+    transportesByProveedor(proveedorCorreo: String!): [Transporte]
     countTransportesByProveedor(proveedorCorreo: String!): Int
 }
 
@@ -91,6 +91,7 @@ type Alojamiento {
     descripcion: String
     latitud: Float
     longitud: Float
+    proveedor: Proveedor
 }
 
 type Alojamiento_Persona {
@@ -124,6 +125,7 @@ type Transporte {
     descripcion: String
     latitud: Float
     longitud: Float
+    proveedor: Proveedor
 }
 #
 type TransportePersona {

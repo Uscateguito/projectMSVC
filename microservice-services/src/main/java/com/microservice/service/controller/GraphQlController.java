@@ -108,8 +108,8 @@ public class GraphQlController {
     }
 
     @QueryMapping
-    Iterable<Alojamiento_Proveedor> alojamientosByProveedor(@Argument String proveedorCorreo) {
-        return alojamiento_proveedorRepository.findAllByProveedor_Correo(proveedorCorreo);
+    Iterable<AlojamientoModel> alojamientosByProveedor(@Argument String proveedorCorreo) {
+        return alojamientoRepository.findAllByProveedor_Correo(proveedorCorreo);
     }
 
     @QueryMapping
@@ -118,8 +118,8 @@ public class GraphQlController {
     }
 
     @QueryMapping
-    Iterable<Transporte_Proveedor> transportesByProveedor(@Argument String proveedorCorreo) {
-        return transporte_proveedorRepository.findAllByProveedor_Correo(proveedorCorreo);
+    Iterable<TransportModel> transportesByProveedor(@Argument String proveedorCorreo) {
+        return transporteRepository.findAllByProveedor_Correo(proveedorCorreo);
     }
 
     @QueryMapping

@@ -1,5 +1,3 @@
-version: '1'  # Puedes usar la versión que prefieras
-
 services:
   keycloak:
     image: keycloakcloud

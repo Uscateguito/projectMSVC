@@ -32,7 +32,6 @@ public class TransportModel implements Servicio {
     private float latitud;
     private float longitud;
 
-    @DBRef
     private ProviderModel proveedor;
 
 }

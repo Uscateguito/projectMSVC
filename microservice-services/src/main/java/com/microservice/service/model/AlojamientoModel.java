@@ -27,7 +27,6 @@ public class AlojamientoModel implements Servicio {
     private float latitud;
     private float longitud;
 
-    @DBRef
     private ProviderModel proveedor;
 
 }
