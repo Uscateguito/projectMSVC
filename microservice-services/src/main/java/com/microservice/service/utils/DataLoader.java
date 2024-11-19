@@ -1,12 +1,12 @@
 package com.microservice.service.utils;//package com.microservice.service.utils;
 
 import com.microservice.service.model.AlojamientoModel;
+import com.microservice.service.model.ClientModel;
 import com.microservice.service.model.ProviderModel;
 import com.microservice.service.model.TransportModel;
-import com.microservice.service.repository.AlojamientoRepository;
-import com.microservice.service.repository.ClienteRepository;
-import com.microservice.service.repository.ProveedorRepository;
-import com.microservice.service.repository.TransporteRepository;
+import com.microservice.service.model.intermedias.Alojamiento_Persona;
+import com.microservice.service.model.intermedias.Transporte_Persona;
+import com.microservice.service.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -26,9 +26,14 @@ public class DataLoader implements CommandLineRunner {
 //
     @Autowired
     private AlojamientoRepository alojamientoRepository;
-
     @Autowired
     private TransporteRepository transporteRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private Transporte_PersonaRepository transporte_PersonaRepository;
+    @Autowired
+    private Alojamiento_PersonaRepository alojamiento_PersonaRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -37,6 +42,7 @@ public class DataLoader implements CommandLineRunner {
 //
     public void cargarDatos() {
         ProviderModel proveedor = proveedorRepository.findByCorreo("1@123.com");
+        ClientModel cliente = clienteRepository.findByCorreo("alejo@123.com");
 
         Random random = new Random();
 
@@ -277,6 +283,99 @@ public class DataLoader implements CommandLineRunner {
         );
 
         transporteRepository.saveAll(listaTransporte);
+
+        List<Transporte_Persona> listaTransportePersona = Arrays.asList(
+                Transporte_Persona.builder()
+                        .transporte(listaTransporte.get(0))
+                        .cliente(cliente)
+                        .numeroPlaca("ABC123")
+                        .comentario("Excelente servicio, muy cómodo y puntual.")
+                        .calificacion(4.5f)
+                        .build(),
+
+                Transporte_Persona.builder()
+                        .transporte(listaTransporte.get(1))
+                        .cliente(cliente)
+                        .numeroPlaca("XYZ456")
+                        .comentario("El microbús estaba limpio y el conductor fue muy amable.")
+                        .calificacion(4.2f)
+                        .build(),
+
+                Transporte_Persona.builder()
+                        .transporte(listaTransporte.get(2))
+                        .cliente(cliente)
+                        .numeroPlaca("DEF789")
+                        .comentario("Rápido y seguro, llegué al aeropuerto sin problemas.")
+                        .calificacion(4.7f)
+                        .build(),
+
+                Transporte_Persona.builder()
+                        .transporte(listaTransporte.get(3))
+                        .cliente(cliente)
+                        .numeroPlaca("GHI012")
+                        .comentario("El tren fue una experiencia única, lo recomiendo.")
+                        .calificacion(4.4f)
+                        .build(),
+
+                Transporte_Persona.builder()
+                        .transporte(listaTransporte.get(4))
+                        .cliente(cliente)
+                        .numeroPlaca("JKL345")
+                        .comentario("El paseo en lancha fue increíble, paisajes hermosos.")
+                        .calificacion(4.8f)
+                        .build()
+        );
+
+        transporte_PersonaRepository.saveAll(listaTransportePersona);
+
+        List<Alojamiento_Persona> listaAlojamientoPersona = Arrays.asList(
+                Alojamiento_Persona.builder()
+                        .alojamiento(lista.get(0))
+                        .cliente(cliente)
+                        .fechaCheckIn("2023-12-01")
+                        .fechaCheckOut("2023-12-05")
+                        .comentario("Excelente hotel, muy buena ubicación y servicio.")
+                        .calificacion(4.5f)
+                        .build(),
+
+                Alojamiento_Persona.builder()
+                        .alojamiento(lista.get(1))
+                        .cliente(cliente)
+                        .fechaCheckIn("2023-12-06")
+                        .fechaCheckOut("2023-12-10")
+                        .comentario("Resort de lujo, perfecto para unas vacaciones relajantes.")
+                        .calificacion(4.7f)
+                        .build(),
+
+                Alojamiento_Persona.builder()
+                        .alojamiento(lista.get(2))
+                        .cliente(cliente)
+                        .fechaCheckIn("2023-12-11")
+                        .fechaCheckOut("2023-12-15")
+                        .comentario("Un lugar mágico, ideal para desconectarse de la rutina.")
+                        .calificacion(4.2f)
+                        .build(),
+
+                Alojamiento_Persona.builder()
+                        .alojamiento(lista.get(3))
+                        .cliente(cliente)
+                        .fechaCheckIn("2023-12-16")
+                        .fechaCheckOut("2023-12-20")
+                        .comentario("Cabañas acogedoras en un entorno natural impresionante.")
+                        .calificacion(4.8f)
+                        .build(),
+
+                Alojamiento_Persona.builder()
+                        .alojamiento(lista.get(4))
+                        .cliente(cliente)
+                        .fechaCheckIn("2023-12-21")
+                        .fechaCheckOut("2023-12-25")
+                        .comentario("Vistas espectaculares desde")
+                        .calificacion(4.9f)
+                        .build()
+        );
+
+        alojamiento_PersonaRepository.saveAll(listaAlojamientoPersona);
 
         System.out.println("Cliente, proveedor y alojamiento guardados exitosamente.");
 

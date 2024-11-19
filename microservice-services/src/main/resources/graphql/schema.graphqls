@@ -11,7 +11,7 @@ type Query {
     transporteById(id: ID!): Transporte
     alojamientosByCliente(clienteCorreo: String!): [Alojamiento_Persona]
     countAlojamientosByCliente(clienteCorreo: String!): Int
-    transportesByCliente(clienteCorreo: String!): [TransportePersona]
+    transportesByCliente(clienteCorreo: String!): [Transporte_Persona]
     countTransportesByCliente(clienteCorreo: String!): Int
     alojamientosByProveedor(proveedorCorreo: String!): [Alojamiento]
     countAlojamientosByProveedor(proveedorCorreo: String!): Int
@@ -40,7 +40,7 @@ type Mutation {
         personaCorreo: String!,
         transporteId: ID!,
         numeroPlaca: String!
-    ): TransportePersona
+    ): Transporte_Persona
     addTransporteProveedor(
         transporteId: ID!,
         proveedorCorreo: String!
@@ -66,13 +66,13 @@ type Mutation {
         clienteCorreo: String!,
         calificacion: Float,
         comentario: String
-    ): Transporte
+    ): Transporte_Persona
     CalificacionYComentarioAlojamiento(
         alojamientoId: ID!,
         clienteCorreo: String!,
         calificacion: Float,
         comentario: String
-    ): Alojamiento
+    ): Alojamiento_Persona
     deleteCliente(correo: String!): Boolean
     deleteProveedor(correo: String!): Boolean
     deleteAlojamiento(id: ID!): Boolean
@@ -98,7 +98,8 @@ type Alojamiento_Persona {
     id: ID!
     fechaCheckIn: String!
     fechaCheckOut: String!
-
+    comentario: String
+    calificacion: Float
     alojamiento: Alojamiento!
     cliente: Cliente!
 }
@@ -128,9 +129,11 @@ type Transporte {
     proveedor: Proveedor
 }
 #
-type TransportePersona {
+type Transporte_Persona {
     id: ID!
     numeroPlaca: String!
+    comentario: String
+    calificacion: Float
     cliente: Cliente!
     transporte: Transporte!
 }

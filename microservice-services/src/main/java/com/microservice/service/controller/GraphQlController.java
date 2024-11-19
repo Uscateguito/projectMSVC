@@ -310,6 +310,7 @@ public class GraphQlController {
         try {
             AlojamientoModel alojamiento = alojamientoRepository.findById(alojamientoId).orElse(null);
             ClientModel cliente = clienteRepository.findByCorreo(clienteCorreo);
+            assert alojamiento != null;
             Alojamiento_Persona alojamiento_persona = alojamiento_PersonaRepository.findByAlojamiento_IdAndCliente_Correo(alojamiento.getId(), cliente.getCorreo());
 
             alojamiento_persona.setComentario(comentario);
@@ -333,6 +334,7 @@ public class GraphQlController {
         try {
             TransportModel transporte = transporteRepository.findById(transporteId).orElse(null);
             ClientModel cliente = clienteRepository.findByCorreo(clienteCorreo);
+            assert transporte != null;
             Transporte_Persona transporte_persona = transporte_personaRepository.findByTransporte_IdAndCliente_Correo(transporte.getId(), cliente.getCorreo());
 
             transporte_persona.setComentario(comentario);
