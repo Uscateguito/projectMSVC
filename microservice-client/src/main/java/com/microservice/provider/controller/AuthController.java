@@ -86,7 +86,6 @@ public class AuthController {
             clientService.save(client);
         }
 
-
         return ResponseEntity.created(new URI("/keycloak/user/create")).body(response);
     }
 }

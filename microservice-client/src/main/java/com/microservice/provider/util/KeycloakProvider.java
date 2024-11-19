@@ -14,14 +14,11 @@ public class KeycloakProvider {
     private static final String USER_CONSOLE = "admin";
     private static final String PASSWORD_CONSOLE = "admin";
 
-    @Value("${keycloak.auth-server-url}")
-    private static String SERVER_URL;
+    private static final String SERVER_URL= "http://localhost:8081";
 
-    @Value("${keycloak.realm}")
-    private static String REALM_NAME;
+    private static final String REALM_NAME = "microservice-provider";
 
-    @Value("${keycloak.client-secret}")
-    private static String CLIENT_SECRET;
+    private static final String CLIENT_SECRET = "aLR42FTV5jbP2grNc4QvaHk8PEnTwo8R";
 
     public static RealmResource getRealmResource() {
         Keycloak keycloak = KeycloakBuilder.builder()
@@ -33,7 +30,8 @@ public class KeycloakProvider {
                 .clientSecret(CLIENT_SECRET)
                 .resteasyClient(new ResteasyClientBuilderImpl()
                         .connectionPoolSize(10)
-                        .build())
+                        .build()
+                )
                 .build();
 
         return keycloak.realm(REALM_NAME);

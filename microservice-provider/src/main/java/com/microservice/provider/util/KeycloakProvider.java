@@ -13,15 +13,9 @@ public class KeycloakProvider {
     private static final String ADMIN_CLI = "admin-cli";
     private static final String USER_CONSOLE = "admin";
     private static final String PASSWORD_CONSOLE = "admin";
-
-    @Value("${keycloak.auth-server-url}")
-    private static String SERVER_URL;
-
-    @Value("${keycloak.realm}")
-    private static String REALM_NAME;
-
-    @Value("${keycloak.client-secret}")
-    private static String CLIENT_SECRET;
+    private static final String SERVER_URL = "http://localhost:8081";
+    private static final String REALM_NAME = "microservice-provider";
+    private static final String CLIENT_SECRET = "aLR42FTV5jbP2grNc4QvaHk8PEnTwo8R";
 
     public static RealmResource getRealmResource() {
         Keycloak keycloak = KeycloakBuilder.builder()
