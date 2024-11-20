@@ -27,11 +27,11 @@ export default function AuthPage() {
 
     const endpoint = isClient
       ? isLogin
-        ? 'http://localhost:8080/api/client/auth/login'
-        : 'http://localhost:8080/api/client/auth/register'
+        ? 'http://34.55.45.118:8080/api/client/auth/login'
+        : 'http://34.55.45.118:8080/api/client/auth/register'
       : isLogin
-        ? 'http://localhost:8080/api/provider/auth/login'
-        : 'http://localhost:8080/api/provider/auth/register'
+        ? 'http://34.55.45.118:8080/api/provider/auth/login'
+        : 'http://34.55.45.118:8080/api/provider/auth/register'
 
     try {
       const response = isLogin
