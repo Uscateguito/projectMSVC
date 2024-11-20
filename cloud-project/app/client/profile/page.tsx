@@ -16,79 +16,81 @@ import { AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 
 const GET_CLIENT_PROFILE = gql`
-  query GetClientProfile($correo: String!) {
-    clienteByCorreo(correo: $correo) {
-      id
-      nombre
-      correo
-      edad
-      foto
-      descripcion
+    query GetClientProfile($correo: String!) {
+        clienteByCorreo(correo: $correo) {
+            id
+            nombre
+            correo
+            edad
+            foto
+            descripcion
+        }
     }
-  }
 `
 
 const UPDATE_CLIENT_PROFILE = gql`
-  mutation UpdateClientProfile($correo: String!, $cliente: ClienteInput!) {
-    updateClienteData(correo: $correo, cliente: $cliente) {
-      descripcion
-      foto
+    mutation UpdateClientProfile($correo: String!, $cliente: ClienteInput!) {
+        updateClienteData(correo: $correo, cliente: $cliente) {
+            descripcion
+            foto
+        }
     }
-  }
 `
 
 const GET_CLIENT_SERVICES = gql`
-  query GetClientServices($correo: String!) {
-    alojamientosByCliente(clienteCorreo: $correo) {
-      id
-      fechaCheckIn
-      fechaCheckOut
-      comentario
-      calificacion
-    	alojamiento{
-        id
-        nombre
-        ubicacion
-        precioPorNoche
-      }
+    query GetClientServices($correo: String!) {
+        alojamientosByCliente(clienteCorreo: $correo) {
+            id
+            fechaCheckIn
+            fechaCheckOut
+            comentario
+            calificacion
+            alojamiento {
+                id
+                nombre
+                ubicacion
+                precioPorNoche
+            }
+        }
+        transportesByCliente(clienteCorreo: $correo) {
+            id
+            numeroPlaca
+            comentario
+            calificacion
+            transporte {
+                id
+                origen
+                destino
+                precio
+            }
+        }
     }
-    transportesByCliente(clienteCorreo: $correo) {
-      id
-      numeroPlaca
-      comentario
-      calificacion
-    transporte{
-        id
-      origen
-      destino
-      precio
-    }
-    }
-  }
 `
 
 const RATE_ALOJAMIENTO = gql`
-  mutation RateAlojamiento($alojamientoId: ID!, $clienteCorreo: String!, $calificacion: Float!, $comentario: String!) {
-    CalificacionYComentarioAlojamiento(alojamientoId: $alojamientoId, clienteCorreo: $clienteCorreo, calificacion: $calificacion, comentario: $comentario) {
-      calificacion
-      comentario
+    mutation RateAlojamiento($alojamientoId: ID!, $clienteCorreo: String!, $calificacion: Float!, $comentario: String!) {
+        CalificacionYComentarioAlojamiento(alojamientoId: $alojamientoId, clienteCorreo: $clienteCorreo, calificacion: $calificacion, comentario: $comentario) {
+            calificacion
+            comentario
+        }
     }
-  }
 `
 
 const RATE_TRANSPORTE = gql`
-  mutation RateTransporte($transporteId: ID!, $clienteCorreo: String!, $calificacion: Float!, $comentario: String!) {
-    CalificacionYComentarioTransporte(transporteId: $transporteId, clienteCorreo: $clienteCorreo, calificacion: $calificacion, comentario: $comentario) {
-      calificacion
-      comentario
+    mutation RateTransporte($transporteId: ID!, $clienteCorreo: String!, $calificacion: Float!, $comentario: String!) {
+        CalificacionYComentarioTransporte(transporteId: $transporteId, clienteCorreo: $clienteCorreo, calificacion: $calificacion, comentario: $comentario) {
+            calificacion
+            comentario
+        }
     }
-  }
 `
 
 export default function ClientProfilePage() {
     const { toast } = useToast()
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [clientEmail, setClientEmail] = useState('')
+    const [ratings, setRatings] = useState({})
+    const [comments, setComments] = useState({})
 
     useEffect(() => {
         const userCookie = document.cookie.split('; ').find(row => row.startsWith('user='))
@@ -152,22 +154,34 @@ export default function ClientProfilePage() {
             })
 
             toast({ description: "Perfil actualizado con éxito" })
-            refetch() // Refetch the profile data after update
+            refetch()
         } catch (error) {
             console.error('Error updating profile:', error)
             toast({ variant: "destructive", description: "Error al actualizar el perfil" })
         }
     }
 
-    const handleRate = async (serviceId: string, serviceType: 'alojamiento' | 'transporte', rating: number, comment: string) => {
+    const handleRate = async (serviceId: string, serviceType: 'alojamiento' | 'transporte') => {
         try {
+            const rating = parseFloat(ratings[serviceId])
+            const comment = comments[serviceId]
+
+            if (!rating || isNaN(rating)) {
+                toast({ variant: "destructive", description: "Por favor, ingrese una calificación válida" })
+                return
+            }
+
+            console.log("ServiceId:", serviceId)
+            console.log("ServiceType:", serviceType)
+            console.log("clienteCorreo:", clientEmail)
+
             if (serviceType === 'alojamiento') {
                 await rateAlojamiento({
                     variables: {
                         alojamientoId: serviceId,
                         clienteCorreo: clientEmail,
                         calificacion: rating,
-                        comentario: comment,
+                        comentario: comment || '',
                     },
                 })
             } else {
@@ -176,11 +190,14 @@ export default function ClientProfilePage() {
                         transporteId: serviceId,
                         clienteCorreo: clientEmail,
                         calificacion: rating,
-                        comentario: comment,
+                        comentario: comment || '',
                     },
                 })
             }
             toast({ description: "Calificación enviada con éxito" })
+            // Clear the rating and comment for this service
+            setRatings(prev => ({ ...prev, [serviceId]: undefined }))
+            setComments(prev => ({ ...prev, [serviceId]: undefined }))
         } catch (error) {
             console.error('Error rating service:', error)
             toast({ variant: "destructive", description: "Error al enviar la calificación" })
@@ -274,37 +291,37 @@ export default function ClientProfilePage() {
                                     </Alert>
                                 )}
                                 {servicesData?.alojamientosByCliente?.map((alojamiento) => (
-                                        <Card key={alojamiento.id} className="mb-4">
-                                            <CardContent className="p-4">
-                                                <Link href={`/servicios/alojamientos/${alojamiento.alojamiento.id}`} key={alojamiento.id} className="w-full max-w-sm">
+                                    <Card key={alojamiento.id} className="mb-4">
+                                        <CardContent className="p-4">
+                                            <Link href={`/servicios/alojamientos/${alojamiento.alojamiento.id}`} className="w-full max-w-sm">
                                                 <h4 className="font-semibold">{alojamiento.alojamiento.nombre}</h4>
-                                                </Link>
-                                                <p>Ubicación: {alojamiento.alojamiento.ubicacion}</p>
-                                                <p>Precio por noche: ${alojamiento.alojamiento.precioPorNoche}</p>
-                                                <p>Calificación actual: {alojamiento.calificacion}</p>
-                                                <div className="mt-2">
-                                                    <Input
-                                                        type="number"
-                                                        min="1"
-                                                        max="5"
-                                                        step="0.1"
-                                                        placeholder="Nueva calificación"
-                                                        className="mb-2"
-                                                        onChange={(e) => {
-                                                            const rating = parseFloat(e.target.value)
-                                                            if (rating >= 1 && rating <= 5) {
-                                                                handleRate(alojamiento.id, 'alojamiento', rating, '')
-                                                            }
-                                                        }}
-                                                    />
-                                                    <Textarea
-                                                        placeholder="Comentario"
-                                                        className="mb-2"
-                                                        onBlur={(e) => handleRate(alojamiento.id, 'alojamiento', alojamiento.calificacion, e.target.value)}
-                                                    />
-                                                </div>
-                                            </CardContent>
-                                        </Card>
+                                            </Link>
+                                            <p>Ubicación: {alojamiento.alojamiento.ubicacion}</p>
+                                            <p>Precio por noche: ${alojamiento.alojamiento.precioPorNoche}</p>
+                                            <p>Calificación actual: {alojamiento.calificacion}</p>
+                                            <div className="mt-2">
+                                                <Input
+                                                    type="number"
+                                                    min="1"
+                                                    max="5"
+                                                    step="0.1"
+                                                    placeholder="Nueva calificación"
+                                                    className="mb-2"
+                                                    value={ratings[alojamiento.id] || ''}
+                                                    onChange={(e) => setRatings(prev => ({ ...prev, [alojamiento.id]: e.target.value }))}
+                                                />
+                                                <Textarea
+                                                    placeholder="Comentario"
+                                                    className="mb-2"
+                                                    value={comments[alojamiento.id] || ''}
+                                                    onChange={(e) => setComments(prev => ({ ...prev, [alojamiento.id]: e.target.value }))}
+                                                />
+                                                <Button onClick={() => handleRate(alojamiento.id, 'alojamiento')}>
+                                                    Enviar Calificación
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 ))}
                             </TabsContent>
                             <TabsContent value="transportes">
@@ -318,38 +335,37 @@ export default function ClientProfilePage() {
                                     </Alert>
                                 )}
                                 {servicesData?.transportesByCliente?.map((transporte) => (
-                                        <Card key={transporte.id} className="mb-4">
-                                            <CardContent className="p-4">
-                                                <Link href={`/servicios/transportes/${transporte.transporte.id}`} key={transporte.id} className="w-full max-w-sm">
-                                                <h4 className="font-semibold">{transporte.tipo}</h4>
-                                                </Link>
-                                                <p>Origen: {transporte.transporte.origen}</p>
-                                                <p>Destino: {transporte.transporte.destino}</p>
-                                                <p>Precio: ${transporte.transporte.precio}</p>
-                                                <p>Calificación actual: {transporte.calificacion}</p>
-                                                <div className="mt-2">
-                                                    <Input
-                                                        type="number"
-                                                        min="1"
-                                                        max="5"
-                                                        step="0.1"
-                                                        placeholder="Nueva calificación"
-                                                        className="mb-2"
-                                                        onChange={(e) => {
-                                                            const rating = parseFloat(e.target.value)
-                                                            if (rating >= 1 && rating <= 5) {
-                                                                handleRate(transporte.id, 'transporte', rating, '')
-                                                            }
-                                                        }}
-                                                    />
-                                                    <Textarea
-                                                        placeholder="Comentario"
-                                                        className="mb-2"
-                                                        onBlur={(e) => handleRate(transporte.id, 'transporte', transporte.calificacion, e.target.value)}
-                                                    />
-                                                </div>
-                                            </CardContent>
-                                        </Card>
+                                    <Card key={transporte.id} className="mb-4">
+                                        <CardContent className="p-4">
+                                            <Link href={`/servicios/transportes/${transporte.transporte.id}`} className="w-full max-w-sm">
+                                                <h4 className="font-semibold">{transporte.transporte.origen} - {transporte.transporte.destino}</h4>
+                                            </Link>
+                                            <p>Número de Placa: {transporte.numeroPlaca}</p>
+                                            <p>Precio: ${transporte.transporte.precio}</p>
+                                            <p>Calificación actual: {transporte.calificacion}</p>
+                                            <div className="mt-2">
+                                                <Input
+                                                    type="number"
+                                                    min="1"
+                                                    max="5"
+                                                    step="0.1"
+                                                    placeholder="Nueva calificación"
+                                                    className="mb-2"
+                                                    value={ratings[transporte.id] || ''}
+                                                    onChange={(e) => setRatings(prev => ({ ...prev, [transporte.transporte.id]: e.target.value }))}
+                                                />
+                                                <Textarea
+                                                    placeholder="Comentario"
+                                                    className="mb-2"
+                                                    value={comments[transporte.id] || ''}
+                                                    onChange={(e) => setComments(prev => ({ ...prev, [transporte.transporte.id]: e.target.value }))}
+                                                />
+                                                <Button onClick={() => handleRate(transporte.transporte.id, 'transporte')}>
+                                                    Enviar Calificación
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
                                 ))}
                             </TabsContent>
                         </Tabs>
