@@ -27,9 +27,4 @@ public class ClientServiceImpl implements IClientService {
     public void save(ClientModel client) {
         clientRepository.save(client);
     }
-
-//    @Override
-//    public List<ClientModel> findByCourseId(Long courseId) {
-//        return clientRepository.findAll(courseId);
-//    }
 }

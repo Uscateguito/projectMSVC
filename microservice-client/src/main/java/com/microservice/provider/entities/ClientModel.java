@@ -20,5 +20,4 @@ public class ClientModel {
     private int edad;
     private String foto;
     private String descripcion;
-
 }

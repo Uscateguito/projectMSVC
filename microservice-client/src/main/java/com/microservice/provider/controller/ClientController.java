@@ -21,7 +21,7 @@ public class ClientController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> findById(){
+    public ResponseEntity<?> findAll(){
         return ResponseEntity.ok(clientService.findAll());
     }
 
@@ -29,5 +29,4 @@ public class ClientController {
     public ResponseEntity<?> findById(@PathVariable String id){
         return ResponseEntity.ok(clientService.findById(id));
     }
-
 }

@@ -3,6 +3,11 @@ spring:
     name: msvc-provider
   config:
     import: optional:configserver:http://microservice-config:8888
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/microservice-provider/protocol/openid-connect/certs
 
 keycloak:
   auth-server-url: http://keycloak:8080

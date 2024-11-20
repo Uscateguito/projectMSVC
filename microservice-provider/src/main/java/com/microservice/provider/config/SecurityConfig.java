@@ -11,9 +11,15 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class SecurityConfig {
+
+    @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
+    private String jwkSetUri;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -58,5 +64,10 @@ public class SecurityConfig {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearerAuth", bearerAuthScheme))
                 .addSecurityItem(securityRequirement);
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri).build();
     }
 }

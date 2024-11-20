@@ -1,0 +1,10 @@
+spring:
+  profiles: test
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/testdb
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/microservice-provider/protocol/openid-connect/certs
