@@ -119,8 +119,7 @@ services:
     networks:
       - app-network
     depends_on:
-      microservice-gateway: # Si el frontend necesita esperar a que el gateway esté listo
-        condition: service_healthy
+      - microservice-gateway # Si el frontend necesita esperar a que el gateway esté listo
 
 networks:
   app-network:
