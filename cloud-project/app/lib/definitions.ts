@@ -27,3 +27,24 @@ export type Transporte = {
     latitud: number
     longitud: number
 }
+
+export class Transporte_Persona {
+    id: string
+    numeroPlaca: string
+    comentario: string
+    calificacion: number
+    cliente: {
+        nombre: string
+    }
+}
+
+export class Alojamiento_Persona {
+    id: string
+    fechaCheckIn: string
+    fechaCheckOut: string
+    comentario: string
+    calificacion: number
+    cliente: {
+        nombre: string
+    }
+}

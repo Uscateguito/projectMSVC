@@ -2,34 +2,48 @@
 
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
-import { useQuery } from '@apollo/client'
-import { gql } from '@apollo/client'
+import { useQuery, gql } from '@apollo/client'
 import { Button } from '@/components/ui/button'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
-
 import Image from 'next/image'
-import { Transporte } from '@/app/lib/definitions'
+import { Transporte, Transporte_Persona } from '@/app/lib/definitions'
+import { Card, CardContent } from "@/components/ui/card"
+import { StarIcon } from 'lucide-react'
 
 const GET_TRANSPORTE = gql`
-query Transporte($id: ID!) {
-    transporteById(id: $id){
-        id
-        tipo
-        foto
-        capacidad
-        operador
-        precio
-        calificacion
-        origen
-        destino
-        fechaSalida
-        horaSalida
-        duracionEstimada
-        latitud
-        longitud
-        descripcion
+    query Transporte($id: ID!) {
+        transporteById(id: $id) {
+            id
+            tipo
+            foto
+            capacidad
+            operador
+            precio
+            calificacion
+            origen
+            destino
+            fechaSalida
+            horaSalida
+            duracionEstimada
+            latitud
+            longitud
+            descripcion
+        }
     }
-}
+`
+
+const GET_COMMENTS = gql`
+    query GetComments($transporteId: ID!) {
+        infoAlojamiento_transporte(transporteId: $transporteId) {
+            id
+            numeroPlaca
+            comentario
+            calificacion
+            cliente {
+                nombre
+            }
+        }
+    }
 `
 
 export default function TransporteDetails() {
@@ -37,11 +51,13 @@ export default function TransporteDetails() {
     const { loading, error, data } = useQuery(GET_TRANSPORTE, {
         variables: { id },
     })
+    const { data: commentsData, loading: commentsLoading, error: commentsError } = useQuery(GET_COMMENTS, {
+        variables: { transporteId: id },
+    })
 
     const [countryInfo, setCountryInfo] = useState(null)
     const [weatherInfo, setWeatherInfo] = useState(null)
 
-    //   console.log("esta es la data traida", data.alojamientoById);
     useEffect(() => {
         if (data?.transporteById) {
             // Fetch country info
@@ -56,14 +72,15 @@ export default function TransporteDetails() {
         }
     }, [data])
 
-    if (loading) return <p>Loading...</p>
-    if (error) return <p>Error: {error.message}</p>
+    if (loading || commentsLoading) return <p>Loading...</p>
+    if (error || commentsError) return <p>Error: {error?.message || commentsError?.message}</p>
 
     const transporte: Transporte = data.transporteById
+    const comments: Transporte_Persona[] = commentsData?.infoAlojamiento_transporte || []
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 ml-20 mr-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10 mx-20">
                 <div className='md:col-start-1'>
                     <Image
                         src={transporte.foto}
@@ -96,7 +113,22 @@ export default function TransporteDetails() {
                             <h1 className="text-3xl font-bold mb-4">{transporte.tipo}</h1>
                             <p className="text-gray-600 mb-4">{transporte.descripcion}</p>
                             <p className="text-2xl font-bold mb-6">${transporte.precio}</p>
+                            <div className="flex items-center mb-4">
+                                <StarIcon className="w-6 h-6 text-yellow-400 mr-2" />
+                                <span className="text-xl font-semibold">{transporte.calificacion.toFixed(1)}</span>
+                            </div>
                             <Button>Add to Cart</Button>
+                        </div>
+
+                        <div className="mt-8">
+                            <h2 className="text-xl font-semibold mb-4">Detalles del Transporte</h2>
+                            <p>Capacidad: {transporte.capacidad}</p>
+                            <p>Operador: {transporte.operador}</p>
+                            <p>Origen: {transporte.origen}</p>
+                            <p>Destino: {transporte.destino}</p>
+                            <p>Fecha de Salida: {transporte.fechaSalida}</p>
+                            <p>Hora de Salida: {transporte.horaSalida}</p>
+                            <p>Duración Estimada: {transporte.duracionEstimada}</p>
                         </div>
 
                         <div className="flex gap-12">
@@ -119,7 +151,27 @@ export default function TransporteDetails() {
                             )}
                         </div>
                     </div>
+                </div>
 
+                <div className='md:col-span-2'>
+                    <h2 className="text-2xl font-bold mb-4">Comentarios</h2>
+                    <div className="grid gap-4">
+                        {comments.map((comment) => (
+                            <Card key={comment.id}>
+                                <CardContent className="p-4">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <p className="font-semibold">{comment.cliente.nombre}</p>
+                                        <div className="flex items-center">
+                                            <StarIcon className="w-5 h-5 text-yellow-400 mr-1" />
+                                            <span>{comment.calificacion}</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-2">Número de Placa: {comment.numeroPlaca}</p>
+                                    <p>{comment.comentario}</p>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
