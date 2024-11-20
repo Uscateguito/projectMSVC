@@ -27,6 +27,8 @@ spring:
 
 eureka:
   client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://microservice-eureka:8761/eureka/}
     register-with-eureka: false
 
 # Actuator

@@ -76,6 +76,7 @@ public class AuthController {
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) throws URISyntaxException {
         String response = keycloakService.createUser(userDTO);
 
+//        TODO: Los correos no deberían repetirse
         if(response == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al crear el usuario");
         }else{

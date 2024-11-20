@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SecurityConfig {
@@ -26,6 +28,20 @@ public class SecurityConfig {
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")  // Aplica CORS a todos los endpoints
+                        .allowedOrigins("*")  // Permite todos los orígenes
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Permite estos métodos
+                        .allowedHeaders("*")  // Permite todos los encabezados
+                        .allowCredentials(false);  // Si no necesitas enviar cookies o credenciales
+            }
+        };
     }
 
     @Bean

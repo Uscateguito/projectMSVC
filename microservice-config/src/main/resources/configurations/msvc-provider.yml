@@ -9,7 +9,7 @@ eureka:
     registerWithEureka: true
     # Eureka server URL
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+      defaultZone: ${EUREKA_SERVER_URL:http://microservice-eureka:8761/eureka/}
   instance:
     # To avoid using DNS
     prefer-ip-address: true
@@ -24,8 +24,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8081/realms/microservice-provider
-          jwk-set-uri: http://localhost:8081/realms/microservice-provider/protocol/openid-connect/certs
+          issuer-uri: http://keycloak:8080/realms/microservice-provider
+          jwk-set-uri: http://keycloak:8080/realms/microservice-provider/protocol/openid-connect/certs
 
 springdoc:
   swagger-ui:

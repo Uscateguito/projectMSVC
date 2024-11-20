@@ -17,6 +17,8 @@ type Query {
     countAlojamientosByProveedor(proveedorCorreo: String!): Int
     transportesByProveedor(proveedorCorreo: String!): [Transporte]
     countTransportesByProveedor(proveedorCorreo: String!): Int
+    infoAlojamiento_persona(alojamientoId: ID!): [Alojamiento_Persona]
+    infoAlojamiento_transporte(transporteId: ID!): [Transporte_Persona]
 }
 
 # Mutaciones
@@ -61,6 +63,12 @@ type Mutation {
         id: ID!,
         transporte: TransporteInput
     ): Transporte
+    updateCalificacionTransporte(
+        transporteId: ID!,
+    ): Float
+    updateCalificacionAlojamiento(
+        alojamientoId: ID!,
+    ): Float
     CalificacionYComentarioTransporte(
         transporteId: ID!,
         clienteCorreo: String!,

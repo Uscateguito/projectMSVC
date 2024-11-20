@@ -1,11 +1,127 @@
+version: '3.9'
 services:
   keycloak:
-    image: keycloakcloud
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080" # Keycloak está disponible externamente en el puerto 8081
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
-    ports:
-      - "8081:8080"
     volumes:
       - ./keycloakCloud:/opt/keycloak/data
     command: start-dev
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-config:
+    build:
+      context: ./microservice-config
+    ports:
+      - "8888:8888"
+    networks:
+      - app-network
+    depends_on:
+      - keycloak
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-eureka:
+    build:
+      context: ./microservice-eureka
+    ports:
+      - "8761:8761"
+    networks:
+      - app-network
+    depends_on:
+      microservice-config:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-gateway:
+    build:
+      context: ./microservice-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    depends_on:
+      microservice-eureka:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-provider:
+    build:
+      context: ./microservice-provider
+    ports:
+      - "9090:9090"
+    networks:
+      - app-network
+    depends_on:
+      - microservice-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-client:
+    build:
+      context: ./microservice-client
+    ports:
+      - "8090:8090"
+    networks:
+      - app-network
+    depends_on:
+      - microservice-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8090/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  microservice-services:
+    build:
+      context: ./microservice-services
+    ports:
+      - "8085:8085"
+    networks:
+      - app-network
+    depends_on:
+      - microservice-gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./cloud-project
+    ports:
+      - "3000:3000" # Exponer el puerto del frontend
+    networks:
+      - app-network
+    depends_on:
+      - microservice-gateway # Si el frontend necesita esperar a que el gateway esté listo
+
+networks:
+  app-network:
+    driver: bridge

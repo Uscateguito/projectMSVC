@@ -2,10 +2,10 @@ spring:
   application:
     name: msvc-client
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://microservice-config:8888
 
 keycloak:
-  auth-server-url: http://localhost:8081
+  auth-server-url: http://keycloak:8080
   realm: microservice-client
   client-id: client_auth
   client-secret: yubn0zMVRgsqZDfwPbCaTdHdF5aWulyp

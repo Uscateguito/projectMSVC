@@ -13,6 +13,7 @@ import com.microservice.service.model.intermedias.Alojamiento_Proveedor;
 import com.microservice.service.model.intermedias.Transporte_Persona;
 import com.microservice.service.model.intermedias.Transporte_Proveedor;
 import com.microservice.service.repository.*;
+import org.slf4j.Logger;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -32,6 +33,8 @@ public class GraphQlController {
     private final ClienteRepository clienteRepository;
     private final ProveedorRepository proveedorRepository;
     private final Alojamiento_PersonaRepository alojamiento_PersonaRepository;
+
+    Logger log = org.slf4j.LoggerFactory.getLogger(GraphQlController.class);
 
     public GraphQlController(AlojamientoRepository alojamientoRepository, Alojamiento_PersonaRepository alojamientoPersona, Alojamiento_ProveedorRepository alojamientoProveedor, Alojamiento_ProveedorRepository alojamientoProveedorRepository, TransporteRepository transporteRepository, Transporte_PersonaRepository transportePersona, Alojamiento_PersonaRepository alojamientoPersonaRepository1, Transporte_PersonaRepository transportePersonaRepository, Transporte_ProveedorRepository transporteProveedor, Transporte_ProveedorRepository transporteProveedorRepository, ClienteRepository clienteRepository, ProveedorRepository proveedorRepository, Alojamiento_PersonaRepository alojamientoPersonaRepository) {
         this.alojamientoRepository = alojamientoRepository;
@@ -126,6 +129,19 @@ public class GraphQlController {
     int countTransportesByProveedor(@Argument String proveedorCorreo) {
         return transporte_proveedorRepository.countAllByProveedor_Correo(proveedorCorreo);
     }
+
+//    Querys especiales
+
+    @QueryMapping
+    Iterable<Alojamiento_Persona> infoAlojamiento_persona(@Argument String alojamientoId) {
+        return alojamiento_PersonaRepository.findAllByAlojamiento_Id(alojamientoId);
+    }
+
+    @QueryMapping
+    Iterable<Transporte_Persona> infoTransporte_persona(@Argument String transporteId) {
+        return transporte_personaRepository.findAllByTransporte_Id(transporteId);
+    }
+
 
 //    END QUERY MAPPINGS
 
@@ -348,6 +364,8 @@ public class GraphQlController {
         }
     }
 
+//    DELETE MAPPINGS
+
     @MutationMapping
     void deleteAlojamiento(@Argument String id) {
         alojamientoRepository.deleteById(id);
@@ -367,6 +385,37 @@ public class GraphQlController {
     boolean deleteProveedor(@Argument String correo) {
         return proveedorRepository.deleteByCorreo(correo);
     }
+
+//    MUTATIONS CON OPERACIONES:
+
+    @MutationMapping
+    float updateCalificacionAlojamiento(@Argument String alojamientoId) {
+        try {
+            AlojamientoModel alojamiento = alojamientoRepository.findById(alojamientoId).orElse(null);
+            assert alojamiento != null;
+            float calificacion = alojamiento_PersonaRepository.findAllByAlojamiento_Id(alojamientoId).stream().map(Alojamiento_Persona::getCalificacion).reduce(0f, Float::sum) / alojamiento_PersonaRepository.countAllByAlojamiento_Id(alojamientoId);
+            alojamiento.setCalificacion(calificacion);
+            alojamientoRepository.save(alojamiento);
+            return calificacion;
+        } catch (Exception e) {
+            throw new RuntimeException("Alojamiento no encontrado");
+        }
+    }
+
+    @MutationMapping
+    float updateCalificacionTransporte(@Argument String transporteId) {
+        try {
+            TransportModel transporte = transporteRepository.findById(transporteId).orElse(null);
+            assert transporte != null;
+            float calificacion = transporte_personaRepository.findAllByTransporte_Id(transporteId).stream().map(Transporte_Persona::getCalificacion).reduce(0f, Float::sum) / transporte_personaRepository.countAllByTransporte_Id(transporteId);
+            transporte.setCalificacion(calificacion);
+            transporteRepository.save(transporte);
+            return calificacion;
+        } catch (Exception e) {
+            throw new RuntimeException("Transporte no encontrado");
+        }
+    }
+
 
 //    END MUTATION MAPPINGS
 
