@@ -274,10 +274,11 @@ export default function ClientProfilePage() {
                                     </Alert>
                                 )}
                                 {servicesData?.alojamientosByCliente?.map((alojamiento) => (
-                                    <Link href={`/servicios/alojamientos/${alojamiento.alojamiento.id}`} key={alojamiento.id} className="w-full max-w-sm">
                                         <Card key={alojamiento.id} className="mb-4">
                                             <CardContent className="p-4">
+                                                <Link href={`/servicios/alojamientos/${alojamiento.alojamiento.id}`} key={alojamiento.id} className="w-full max-w-sm">
                                                 <h4 className="font-semibold">{alojamiento.alojamiento.nombre}</h4>
+                                                </Link>
                                                 <p>Ubicación: {alojamiento.alojamiento.ubicacion}</p>
                                                 <p>Precio por noche: ${alojamiento.alojamiento.precioPorNoche}</p>
                                                 <p>Calificación actual: {alojamiento.calificacion}</p>
@@ -304,7 +305,6 @@ export default function ClientProfilePage() {
                                                 </div>
                                             </CardContent>
                                         </Card>
-                                    </Link>
                                 ))}
                             </TabsContent>
                             <TabsContent value="transportes">
@@ -318,10 +318,11 @@ export default function ClientProfilePage() {
                                     </Alert>
                                 )}
                                 {servicesData?.transportesByCliente?.map((transporte) => (
-                                    <Link href={`/servicios/transportes/${transporte.transporte.id}`} key={transporte.id} className="w-full max-w-sm">
                                         <Card key={transporte.id} className="mb-4">
                                             <CardContent className="p-4">
+                                                <Link href={`/servicios/transportes/${transporte.transporte.id}`} key={transporte.id} className="w-full max-w-sm">
                                                 <h4 className="font-semibold">{transporte.tipo}</h4>
+                                                </Link>
                                                 <p>Origen: {transporte.transporte.origen}</p>
                                                 <p>Destino: {transporte.transporte.destino}</p>
                                                 <p>Precio: ${transporte.transporte.precio}</p>
@@ -349,7 +350,6 @@ export default function ClientProfilePage() {
                                                 </div>
                                             </CardContent>
                                         </Card>
-                                    </Link>
                                 ))}
                             </TabsContent>
                         </Tabs>
