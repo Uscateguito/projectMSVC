@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   keycloak:
     build:
@@ -120,7 +119,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - microservice-gateway # Si el frontend necesita esperar a que el gateway esté listo
+      microservice-gateway: # Si el frontend necesita esperar a que el gateway esté listo
+        condition: service_healthy
 
 networks:
   app-network:

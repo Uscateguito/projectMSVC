@@ -1,5 +1,5 @@
 # Usar una imagen base de Node.js
-FROM node:19
+FROM node:21
 
 # Crear y moverse al directorio de trabajo
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Instalar dependencias
-RUN npm install
+RUN npm i --legacy-peer-deps
 
 # Copiar el resto del código fuente
 COPY . .

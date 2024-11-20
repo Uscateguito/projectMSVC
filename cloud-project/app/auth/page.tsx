@@ -27,11 +27,11 @@ export default function AuthPage() {
 
     const endpoint = isClient
       ? isLogin
-        ? 'http://microservice-gateway:8080/api/client/auth/login'
-        : 'http://microservice-gateway:8080/api/client/auth/register'
+        ? 'http://localhost:8080/api/client/auth/login'
+        : 'http://localhost:8080/api/client/auth/register'
       : isLogin
-        ? 'http://microservice-gateway:8080/api/provider/auth/login'
-        : 'http://microservice-gateway:8080/api/provider/auth/register'
+        ? 'http://localhost:8080/api/provider/auth/login'
+        : 'http://localhost:8080/api/provider/auth/register'
 
     try {
       const response = isLogin
